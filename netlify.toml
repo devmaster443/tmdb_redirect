@@ -1,3 +1,9 @@
 [build]
   functions = "netlify/functions"
   publish = "public"
+  
+[[redirects]]
+  from = "/3/*"
+  to = "/.netlify/functions/tmdb-proxy/3/:splat"
+  status = 200
+  force = true

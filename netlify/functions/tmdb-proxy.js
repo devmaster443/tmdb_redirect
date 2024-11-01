@@ -6,13 +6,14 @@ exports.handler = async (event) => {
     const tmdbPath = event.path.replace('/.netlify/functions/tmdb-proxy', '');
 
     // Construct the full TMDb API URL
-    const tmdbApiUrl = `https://api.themoviedb.org/3${tmdbPath}`;
+    const tmdbApiUrl = `https://api.themoviedb.org/3${tmdbPath}${event.rawQuery ? `?${event.rawQuery}` : ''}`;
 
     // Forward the request to TMDb API
     const response = await fetch(tmdbApiUrl, {
       method: event.httpMethod,
       headers: {
         ...event.headers,
+        // Include the TMDb API key from the query if provided, else use your hardcoded token
         'Authorization': `Bearer YOUR_TMDB_API_TOKEN`, // Replace with your actual TMDb token
       },
       body: event.httpMethod === 'POST' ? event.body : undefined,
